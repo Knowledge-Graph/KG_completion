@@ -7,9 +7,9 @@ import efe.tools as tools
 if __name__ =="__main__":
 
 	#Load data, ensure that data is at path: 'path'/'name'/[train|valid|test].txt
-	wn18exp = build_data(name = 'WN18',path = tools.cur_path + '../datasets/')
+	wn18exp = build_data(name = 'wn18',path = tools.cur_path + '/datasets/')
 
-
+	
 	#SGD hyper-parameters:
 	params = Parameters(learning_rate = 0.5, 
 						max_iter = 1000, 
@@ -23,6 +23,7 @@ if __name__ =="__main__":
 	#Parameters given here are the best ones for each model, validated from the grid-search described in the paper
 	all_params = { "Complex_Logistic_Model" : params } ; emb_size = 150; lmbda =0.03;
 	#all_params = { "DistMult_Logistic_Model" : params } ; emb_size = 200; lmbda =0.003; params.learning_rate = 1.0
+	#all_params = { "DistMult_Logistic_Model" : params } ; emb_size = 200; lmbda =0.003; params.learning_rate = 1.0#emb_size = 100; lmbda =0.09
 	#all_params = { "CP_Logistic_Model" : params } ; emb_size = 100; lmbda =0.1; 
 	#all_params = { "Rescal_Logistic_Model" : params } ; emb_size = 50; lmbda =0.1
 	#all_params = { "TransE_L2_Model" : params } ; emb_size = 200; lmbda = 0.5 ; params.learning_rate=0.01
@@ -37,7 +38,7 @@ if __name__ =="__main__":
 
 	#Then call a local grid search, here only with one value of rank and regularization
 	wn18exp.grid_search_on_all_models(all_params, embedding_size_grid = [emb_size], lmbda_grid = [lmbda], nb_runs = 1)
-
+        
 	#Print best averaged metrics:
 	wn18exp.print_best_MRR_and_hits()
 

@@ -90,7 +90,8 @@ class Experiment(object):
 
 		self.models[model_s] = (model, params)
 
-		model.fit(self.train, self.valid, params, self.n_entities, self.n_relations, self.n_entities, self.scorer)
+                #Pass a copy of the params object, for TransE handling of neg_ratio > 1
+		model.fit(self.train, self.valid, Parameters(**vars(params)), self.n_entities, self.n_relations, self.n_entities, self.scorer)
 
 	def test_model(self, model_s):
 		"""
@@ -114,7 +115,7 @@ class Experiment(object):
 		metrics = self.valid_results.print_MRR_and_hits()
 		logger.info( "Corresponding Test metrics:")
 		for model_s, (best_rank, best_lambda, _,_,_,_,_) in metrics.items():
-			self.results.print_MRR_and_hits_given_params(model_s, best_rank, best_lambda)
+			self.results.print_MRR_and_hits_given_params2(model_s, best_rank, best_lambda)
 
 
 	def print_best_MRR_and_hits_per_rel(self):

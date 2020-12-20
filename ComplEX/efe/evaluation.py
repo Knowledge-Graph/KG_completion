@@ -2,7 +2,7 @@ import operator
 import sklearn
 import sklearn.metrics
 
-from tools import *
+from .tools import *
 
 class Result(object):
 	"""
@@ -83,8 +83,9 @@ class CV_Results(object):
 			for i,(k, lmbdas) in enumerate(cur_res.items()):
 				for lmbda, res_list in lmbdas.items():
 					for res in res_list:
-						if res.ranks != None:
-							res = Result(res.preds[idxs], res.true_vals[idxs], res.ranks[idxs], res.raw_ranks[idxs])
+						if res.ranks is not None:
+							#Concat idxs on ranks as subject and object ranks are concatenated in a twice larger array
+							res = Result(res.preds[idxs], res.true_vals[idxs], res.ranks[np.concatenate((idxs,idxs))], res.raw_ranks[np.concatenate((idxs,idxs))])
 						else:
 							res = Result(res.preds[idxs], res.true_vals[idxs], None, None)
 						
@@ -123,28 +124,69 @@ class CV_Results(object):
 		hits_at1 = np.mean( [ (np.sum(ranks <= 1) + 1e-10) / float(len(ranks)) for ranks in ranks_list] )
 		hits_at3 = np.mean( [ (np.sum(ranks <= 3) + 1e-10) / float(len(ranks)) for ranks in ranks_list] )
 		hits_at10= np.mean( [ (np.sum(ranks <= 10) + 1e-10) / float(len(ranks))  for ranks in ranks_list] )
-
-		#raw metrics#######
-		mr=np.mean(res.ranks)
+    
+                #raw metrics#######
+		#mr=np.mean(res.ranks)
 		mr2=np.mean(ranks_list)
-		raw_mr=np.mean(res.raw_ranks)
+		#raw_mr=np.mean(res.raw_ranks)
 		raw_ranks_list = [res.raw_ranks for res in self.res[model_s][rank][lmbda]]
 		raw_mr2=np.mean(raw_ranks_list)
 		raw_hits_at10 = np.mean([(np.sum(raw_ranks <= 10) + 1e-10) / float(len(raw_ranks)) for raw_ranks in raw_ranks_list])
-		###############
-		#logger.info("%s\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%i\t%f" %(model_s, mrr, raw_mrr, hits_at1, hits_at3, hits_at10, rank, lmbda))
-		logger.info("%s\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%i\t%f" %(model_s, raw_mr, raw_hits_at10,mr,hits_at10, raw_mrr, mrr, rank, lmbda))
-		return ( mrr, raw_mrr, hits_at1, hits_at3, hits_at10)
-		#return (raw_mr,raw_hits_at10,hits_at10, raw_mrr,mrr)
 
+
+		#logger.info("%s\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%i\t%f" %(model_s, mrr, raw_mrr, hits_at1, hits_at3, hits_at10, rank, lmbda))
+
+		#return ( mrr, raw_mrr, hits_at1, hits_at3, hits_at10) 
+		logger.info("%s\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%i\t%f" %(model_s,raw_mr2, raw_hits_at10,raw_mrr,mr2,hits_at10, hits_at1,mrr, rank, lmbda))
+		return ( mrr, raw_mrr, hits_at1, hits_at3, hits_at10)
+        
+	def print_MRR_and_hits_given_params2(self, model_s, rank, lmbda):
+		#g=open('distmult_wn18_all.txt','w')
+		g=open('complex_wn18_all.txt','w')
+		mrr = np.mean( [ res.mrr for res in self.res[model_s][rank][lmbda] ] )
+		aa=[ res.mrr for res in self.res[model_s][rank][lmbda] ]
+		raw_mrr = np.mean( [ res.raw_mrr for res in self.res[model_s][rank][lmbda] ] )
+		print ('RANK')
+		ranks_list = [ res.ranks for res in self.res[model_s][rank][lmbda]]
+		raw_ranks_list = [res.raw_ranks for res in self.res[model_s][rank][lmbda]]
+		j,i=0,0
+		for filtered_rank, raw_rank in zip(ranks_list,raw_ranks_list):
+			while j<len(filtered_rank) and i<len(raw_rank):
+				g.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(filtered_rank[j],raw_rank[i],1.0 /filtered_rank[j],1.0 /raw_rank[i],filtered_rank[j+1],raw_rank[i+1],1.0 /filtered_rank[j+1],1.0 /raw_rank[i+1]))
+				i+=2
+				j+=2
+		print ('MRR')
+		for i in aa:
+			print (i)
+		for res in self.res[model_s][rank][lmbda]:
+			print(res)
+ 
+                
+		hits_at1 = np.mean( [ (np.sum(ranks <= 1) + 1e-10) / float(len(ranks)) for ranks in ranks_list] )
+		hits_at3 = np.mean( [ (np.sum(ranks <= 3) + 1e-10) / float(len(ranks)) for ranks in ranks_list] )
+		hits_at10= np.mean( [ (np.sum(ranks <= 10) + 1e-10) / float(len(ranks))  for ranks in ranks_list] )
+
+                #raw metrics#######
+                #mr=np.mean(res.ranks)
+		mr2=np.mean(ranks_list)
+                #raw_mr=np.mean(res.raw_ranks)
+		raw_ranks_list = [res.raw_ranks for res in self.res[model_s][rank][lmbda]]
+		raw_mr2=np.mean(raw_ranks_list)
+		raw_hits_at10 = np.mean([(np.sum(raw_ranks <= 10) + 1e-10) / float(len(raw_ranks)) for raw_ranks in raw_ranks_list])
+
+
+                #logger.info("%s\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%i\t%f" %(model_s, mrr, raw_mrr, hits_at1, hits_at3, hits_at10, rank, lmbda))
+
+                #return ( mrr, raw_mrr, hits_at1, hits_at3, hits_at10)
+		logger.info("%s\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%0.3f\t%i\t%f" %(model_s,raw_mr2, raw_hits_at10,raw_mrr,mr2,hits_at10, hits_at1,mrr, rank, lmbda))
+		return ( mrr, raw_mrr, hits_at1, hits_at3, hits_at10)
 
 	def print_MRR_and_hits(self):
 
 		metrics = {}
 	
-		#logger.info("Model\t\t\tMRR\tRMRR\tH@1\tH@3\tH@10\trank\tlmbda")
-		logger.info("Model\t\t\tMR\tH@10\tFMR\tFH@10\tMRR\tFMRR\t\trank\tlmbda")
-
+             	#logger.info("Model\t\t\tMRR\tRMRR\tH@1\tH@3\tH@10\trank\tlmbda")
+		logger.info("Model\t\t\tMR\tH@10\tMRR\tFMR\tFH@10\tFHit@1\tFMRR\t\trank\tlmbda")
 		for j, (model_s, cur_res) in enumerate(self.res.items()):
 
 			best_mrr = -1.0
@@ -184,7 +226,7 @@ class Scorer(object):
 		if self.compute_ranking_scores:
 			self.update_known_triples_dicts(train.indexes)
 			self.update_known_triples_dicts(test.indexes)
-			if valid != None:
+			if valid is not None:
 				self.update_known_triples_dicts(valid.indexes)
 
 
@@ -214,7 +256,7 @@ class Scorer(object):
 			ranks = np.empty( 2 * nb_test)
 			raw_ranks = np.empty(2 * nb_test)
 
-			if model_s.startswith("DistMult") or model_s.startswith("Complex") or model_s.startswith("CP") or model_s.startswith("TransE"):
+			if model_s.startswith("DistMult") or model_s.startswith("Complex") or model_s.startswith("CP") or model_s.startswith("TransE") or model_s.startswith("Rescal"):
 				#Fast super-ugly filtered metrics computation for Complex, DistMult, RESCAL and TransE
 				logger.info("Fast MRRs")
 
@@ -238,6 +280,10 @@ class Scorer(object):
 					return - np.sum(np.abs((e[i,:] + r[j,:]) - e ),1)
 				def transe_l1_eval_s(j,k):
 					return - np.sum(np.abs(e + (r[j,:] - e[k,:]) ),1)
+				def rescal_eval_o(i,j):
+					return (e[i,:].dot(r[j,:,:])).dot(e.T)
+				def rescal_eval_s(j,k):
+					return e.dot(r[j,:,:].dot(e[k,:]))
 				
 				if model_s.startswith("DistMult"):
 					e = model.e.get_value(borrow=True)
@@ -267,6 +313,11 @@ class Scorer(object):
 					r = model.r.get_value(borrow=True)
 					eval_o = transe_l1_eval_o
 					eval_s = transe_l1_eval_s
+				elif model_s.startswith("Rescal"):
+					e = model.e.get_value(borrow=True)
+					r = model.r.get_value(borrow=True)
+					eval_o = rescal_eval_o
+					eval_s = rescal_eval_s
 
 			else:
 				#Generic version to compute ranks given any model:

@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -81,13 +83,14 @@ def heatmap(dataset):
     sns.heatmap(df, yticklabels=models, xticklabels=10, cmap="coolwarm", ax=ax, cbar_ax=cbar_ax)  #
     for tick in ax.get_yticklabels():
         tick.set_rotation(0)
-        tick.set_fontsize(30)
+        tick.set_fontsize(10)
     for tick in ax.get_xticklabels():
-        tick.set_fontsize(28)
+        tick.set_fontsize(5)
 
     cax = plt.gcf().axes[-1]
-    cax.tick_params(labelsize=20)
-    plt.show()
+    cax.tick_params(labelsize=10)
+    filename='./output/heatmap_{}.pdf'.format(dataset)
+    plt.savefig(filename,bbox_inches='tight')
 
 
 heatmap('WN18RR')

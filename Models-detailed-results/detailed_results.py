@@ -112,6 +112,8 @@ def models_detailed_results(dataset):
     df = pd.DataFrame({'1-1': best_fmrr[:, 0], '1-n': best_fmrr[:, 1], 'n-1': best_fmrr[:, 2], 'n-m': best_fmrr[:, 3]},
                       index=index)
     ax = df.plot.bar(rot=0, fontsize=12)
+    filename = './output/{}_a.png'.format(dataset)
+    plt.savefig(filename)
 
     best_fmrr[:, 0] = best_fmrr[:, 0] / one_one * 100
     best_fmrr[:, 1] = best_fmrr[:, 1] / one_n * 100
@@ -125,9 +127,10 @@ def models_detailed_results(dataset):
          'RotatE': best_fmrr[4], 'TuckER': best_fmrr[5], 'AMIE': best_fmrr[6]}, index=index)
     ax = df.plot.bar(rot=0)
 
-    plt.show()
+    filename='./output/{}_b.png'.format(dataset)
+    plt.savefig(filename)
 
 
 models_detailed_results('FB15k-237')
 models_detailed_results('YAGO3-10')
-models_detailed_results('WN18RR')
+#models_detailed_results('WN18RR')

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-python3 -u -c 'import torch; print(torch.__version__)'
+python -u -c 'import torch; print(torch.__version__)'
 
 CODE_PATH=codes
 DATA_PATH=data

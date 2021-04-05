@@ -1,0 +1,13 @@
+name: null
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - cudatoolkit=10.1
+  - cudnn=7.6
+  - nccl=2.4
+  - python=2.7
+  - tensorflow==1.13.1
+  - pandas==0.24.2
+  - matplotlib===2.2.5
+  - seaborn

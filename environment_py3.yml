@@ -1,0 +1,10 @@
+name: null
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - cudatoolkit=10.1
+  - cudnn=7.6
+  - nccl=2.4
+  - python=3.6
+  - tensorflow-gpu==1.10

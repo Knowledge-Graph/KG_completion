@@ -201,7 +201,6 @@ CUDA_VISIBLE_DEVICES=0 python main.py --dataset YAGO3-10-DR --num_iterations 500
 echo results of ComplEX;
 cd ../ComplEX
 mkdir output
-pip install -r requirements.txt
 python wn18_run.py > ./output/complex_WN18.out
 python fb15k_run.py > ./output/complex_FB15k.out
 

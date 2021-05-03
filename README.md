@@ -102,15 +102,7 @@ To obtain the number of relations on which each model is the most accurate and c
 python detailed_results.py
 ```
 
-## Data redundancy
-To find the reverse and duplicate relations in FB15k:
-```
-python FB15k_redundancy.py
-```
-To find redundant information in test set of FB15k:
-```
-python FB15k_test_redundancy.py
-```
+
 
 
 

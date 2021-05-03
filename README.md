@@ -8,10 +8,14 @@ This repository contains codes, experiment scripts, and datasets to reproduce re
 A summary of the paper is published in a [Medium blog post](https://link.medium.com/lBHwjLeI94).
 
 ## Results of different models on various datasets
-There are a total of 9 embedding-based models that should be trained on 4 different datasets FB15K, FB15K-237, WN18, WN18RR to obtain the results of Table 5, 6, and 13 of the paper. Models are TransE, TransH, TransR, TransD, DistMult, ComplEx, ConvE, RotatE, and TuckER. 
+There are a total of 9 embedding-based models TransE, TransH, TransR, TransD, DistMult, ComplEx, ConvE, RotatE, and TuckER that should be trained on 4 different datasets FB15K, FB15K-237, WN18, WN18RR to obtain the results of Table 5, 6, and 13 of the paper.  
+
 Furthermore, we trained TransE, DistMult, ComplEX, ConvE, RotatE, TuckER on two datasets YAGO3-10 and YAGO3-10-DR to have the results of Table 11.
+
 The experiments used source codes of various methods from several places, including the OpenKE repository which covers implementations of TransE, TransH, TransR, TransD, DistMult, and ComplEx, as well as the source code releases of ComplEx (which also covers DistMult), ConvE, RotatE, and TuckER. 
-The commands to train and test different models can be found in shell script run_python3.sh. The results of OpenKE on FB15k can be obtained by running the shell script named run_python2.sh.
+
+The commands to train and test different models can be found in shell script *run_python3.sh*. The results of OpenKE on FB15k can be obtained by running the shell script named *run_python2.sh*.
+
 After the training and test are completed for a model, the results of that model will be saved in a folder named *output* located inside the folder that has the implementation of that model. For example, you can find the results of TransE on FB15k obtained by using the OpenKE framework in this path *./KG_completion/OpenKE/output/transe_FB15k.out*
 
 

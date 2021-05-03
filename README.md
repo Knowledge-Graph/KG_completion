@@ -16,7 +16,7 @@ The experiments used source codes of various methods from several places, includ
 
 The commands to train and test different models can be found in shell script *run_python3.sh*. The results of OpenKE on FB15k can be obtained by running the shell script named *run_python2.sh*.
 
-After the training and test are completed for a model, the results of that model will be saved in a folder named *output* located inside the folder that has the implementation of that model. For example, you can find the results of TransE on FB15k obtained by using the OpenKE framework in this path *./KG_completion/OpenKE/output/transe_FB15k.out*
+After the training and test are completed for a model, the results of that model will be saved in a folder named **_output_** located inside the folder that has the implementation of that model. For example, you can find the results of **TransE** on **FB15k** obtained by using the **OpenKE** framework in this path **_./KG_completion/OpenKE/output/transe_FB15k.out_**
 
 
 ### ComplEx

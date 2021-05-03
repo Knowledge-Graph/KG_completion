@@ -72,8 +72,9 @@ python combine_res.py
 ```
 
 ## Models-detailed-results
-To obtain these results, the results for each test triple obtained by training and testing different models should be stored in directory *.\KG_completion\Models-detailed-results\test_results*
-To obtain the link prediction results for each test relation of FB15k-237, WN18RR, and YAGO3-10:
+To obtain these results, the results for each test triple obtained by training and testing different models should be stored in directory *./KG_completion/Models-detailed-results/test_results*
+
+Link prediction results for each test relation of FB15k-237, WN18RR, and YAGO3-10:
 ```
 python result_by_rel_all.py
 ```
